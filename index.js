@@ -9,7 +9,7 @@ const bcryptjs = require('bcryptjs');
 
 require('dotenv').config();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 const app = express();
 
 //fetch user check if exists check if password is correct
@@ -37,4 +37,20 @@ passport.use(
         } catch (err) {
             return done(err);
         }
-    }));
+}));
+
+
+
+app.use(cors()); 
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+app.use(passport.initialize());
+
+app.listen(PORT, (err) => {
+    if (err) {
+        throw err;
+    }
+
+    console.log(`The server is now listening at port ${PORT}`);
+});
