@@ -27,6 +27,7 @@ model Conversation {
   id Int @id @default(autoincrement())
   users User[]
   messages Message[]
+  createdAt DateTime @default(now())
 }
 
 model Message {
