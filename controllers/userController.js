@@ -20,6 +20,21 @@ async function signin(req, res) {
     }
 }
 
+async function getUser(req, res) {
+    try {
+        const result = await prisma.user.findUnique({
+            where : {
+                id: req.user.userId
+            }
+        })
+
+        res.json(result);
+    } catch (err) {
+        return console.error(err);
+    }
+}
+
 module.exports = {
-    signin
+    signin,
+    getUser
 }
