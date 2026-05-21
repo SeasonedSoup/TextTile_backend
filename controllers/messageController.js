@@ -5,12 +5,25 @@ async function sendMessage(req,res) {
         const result = await prisma.message.create({
             data: {
                 text: req.body.text, 
-                conversationId: req.body.conversationId,
-                userId: req.body.userId 
+                conversationId: req.conversationId || req.body.conversationId,
+                userId: req.user.userId 
             }
         });
 
+        const update = await prisma.conversation.update({
+            where : {
+                id: req.conversationId || req.body.conversationId,
+                users: {
+                    some: {id: req.user.userId}
+                }
+            },
+            data: {
+                updatedAt: new Date()
+            }
+        })
+
         console.log(result);
+        console.log(update);
     } catch (err) {
         throw err;
     }
@@ -21,7 +34,7 @@ async function deleteMessage(req, res) {
         const result = await prisma.message.delete({
             where: {
                 id: req.body.messageId,
-                userId: req.userId
+                userId: req.user.userId
             }
         });
 
@@ -36,12 +49,10 @@ async function editMessage(req, res) {
         const result = await prisma.message.update({
             where : {
                 id: req.body.messageId,
-                userId: req.userId
+                userId: req.user.userId
             },
             data: {
                 text: req.body.text, 
-                conversationId: req.body.conversationId,
-                userId: req.body.userId 
             }
         });
 

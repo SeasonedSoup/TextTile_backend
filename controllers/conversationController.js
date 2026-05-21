@@ -2,16 +2,18 @@ const {prisma} = require('../lib/prisma');
 
 
 //needs the user id's of you and the person you messaged 
-async function createConversation(req, res) {
+async function createConversation(req, res, next) {
     const result = await prisma.conversation.create({
         data : {
             users: {
                 connect: [
-                    {id: req.body.senderId}, {id: req.body.receiverId}
+                    {id: req.user.userId}, {id: req.body.receiverId}
                 ]
             }
         }
     })
+    req.conversationId = result.id
+    next()
 }
 
 async function getConversations(req, res) {
@@ -19,12 +21,12 @@ async function getConversations(req, res) {
         where : {
             users : {
                 some: {
-                    id: req.body.userId
+                    id: req.user.userId
                 }
             }
         },
         orderBy: {
-            createdAt: 'desc'
+            updatedAt: 'desc'
         },
         include : {
             users: true,

@@ -12,7 +12,7 @@ async function signToken(req, res) {
      )
 }
 
-async function verifyToken(req, res,next) {
+async function verifyToken(req, res, next) {
     const bearerHeader = req.headers["authorization"];
 
     if (bearerHeader == null) return res.status(403);
