@@ -2,6 +2,9 @@ const express = require('express');
 const {prisma} = require('./lib/prisma');
 const cors = require('cors');
 
+//ROUTERS
+const userRouter = require('./routes/userRoute');
+
 //PASSPORT
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -45,6 +48,11 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(passport.initialize());
 
+app.use('/api', userRouter);
+
+app.get('/', (req, res) => {
+    res.send("HI IM TEXTILE API");
+})
 app.listen(PORT, (err) => {
     if (err) {
         throw err;

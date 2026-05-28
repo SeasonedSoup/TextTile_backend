@@ -8,3 +8,5 @@ const conversationRouter = Router();
 
 conversationRouter.get('/conversation', tokenController.verifyToken, conversationController.getConversations);
 conversationRouter.post('/conversation', tokenController.verifyToken,  conversationController.createConversation, messageController.sendMessage);
+
+module.exports = conversationRouter;
