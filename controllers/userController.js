@@ -34,7 +34,18 @@ async function getUser(req, res) {
     }
 }
 
+async function  getAllUsers(req, res) {
+    try {
+        const result = await prisma.user.findMany();
+
+        res.json(result);
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 module.exports = {
     signin,
-    getUser
+    getUser,
+    getAllUsers
 }

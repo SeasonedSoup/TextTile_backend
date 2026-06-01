@@ -4,7 +4,7 @@ const cors = require('cors');
 
 //ROUTERS
 const userRouter = require('./routes/userRoute');
-
+const conversationRouter = require('./routes/conversationRoute');
 //PASSPORT
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -49,6 +49,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(passport.initialize());
 
 app.use('/api', userRouter);
+app.use('/api', conversationRouter);
 
 app.get('/', (req, res) => {
     res.send("HI IM TEXTILE API");
