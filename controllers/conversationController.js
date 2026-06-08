@@ -40,8 +40,26 @@ async function getConversations(req, res) {
 
     res.json(conversations);
 }
+//checks if there is already an existing conversation with this user
+async function getConversationByUser(req, res) {
+    const conversation = await prisma.conversation.findUnique({
+        where: {
+            users: {
+                every: {
+                    id: { in: [req.body.targetUserId, req.user.userId] }
+                },
+                some: { id: req.user.userId }
+            }
+        }
+    })
+
+    const exists = conversation !== null; 
+
+    res.json(exists);
+}
 
 module.exports = {
     createConversation,
-    getConversations
+    getConversations,
+    getConversationByUser
 }
