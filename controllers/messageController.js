@@ -24,6 +24,8 @@ async function sendMessage(req,res) {
 
         console.log(result);
         console.log(update);
+
+        res.json(result);
     } catch (err) {
         throw err;
     }
@@ -61,6 +63,7 @@ async function editMessage(req, res) {
         throw err;
     }
 }
+
 
 module.exports = {
     sendMessage,

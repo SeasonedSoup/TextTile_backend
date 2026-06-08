@@ -8,5 +8,5 @@ const userRouter = Router();
 userRouter.get('/', tokenController.verifyToken, userController.getUser);
 userRouter.post('/login', passport.authenticate('local', {session: false}), tokenController.signToken);
 userRouter.post('/signin', userController.signin);
-userRouter.get('/users',userController.getAllUsers);
+userRouter.get('/users', userController.getAllUsers);
 module.exports = userRouter;

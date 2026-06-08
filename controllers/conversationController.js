@@ -42,14 +42,13 @@ async function getConversations(req, res) {
 }
 //checks if there is already an existing conversation with this user
 async function getConversationByUser(req, res) {
-    const conversation = await prisma.conversation.findUnique({
+    const conversation = await prisma.conversation.findFirst({
         where: {
-            users: {
-                every: {
-                    id: { in: [req.body.targetUserId, req.user.userId] }
-                },
-                some: { id: req.user.userId }
-            }
+            AND: [
+                {users: { some: {id: Number(req.params.receiverId)} }},
+                {users: { some: {id: req.user.userId} }}
+            ]
+           
         }
     })
 
