@@ -2,17 +2,19 @@ const {prisma} = require('../lib/prisma');
 
 async function sendMessage(req,res) {
     try {
+        const conversationId = req.conversationId || req.body.conversationId
+        
         const result = await prisma.message.create({
             data: {
                 text: req.body.text, 
-                conversationId: req.conversationId || req.body.conversationId,
+                conversationId: Number(conversationId),
                 userId: req.user.userId 
             }
         });
 
         const update = await prisma.conversation.update({
             where : {
-                id: req.conversationId || req.body.conversationId,
+                id: Number(conversationId),
                 users: {
                     some: {id: req.user.userId}
                 }

@@ -48,13 +48,18 @@ async function getConversationByUser(req, res) {
                 {users: { some: {id: Number(req.params.receiverId)} }},
                 {users: { some: {id: req.user.userId} }}
             ]
-           
+        },
+        include: {
+            messages: {
+                include: {
+                    user: true
+                }
+            } 
+            
         }
     })
 
-    const exists = conversation !== null; 
-
-    res.json(exists);
+    res.json(conversation);
 }
 
 module.exports = {

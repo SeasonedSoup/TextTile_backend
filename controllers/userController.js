@@ -36,7 +36,11 @@ async function getUser(req, res) {
 
 async function  getAllUsers(req, res) {
     try {
-        const result = await prisma.user.findMany();
+        const result = await prisma.user.findMany({
+            include: {
+                
+            }
+        });
 
         res.json(result);
     } catch (err) {

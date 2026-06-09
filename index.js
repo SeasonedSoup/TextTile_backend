@@ -5,10 +5,13 @@ const cors = require('cors');
 //ROUTERS
 const userRouter = require('./routes/userRoute');
 const conversationRouter = require('./routes/conversationRoute');
+const messageRouter = require('./routes/messageRoute');
+
 //PASSPORT
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcryptjs = require('bcryptjs');
+
 
 require('dotenv').config();
 
@@ -50,6 +53,7 @@ app.use(passport.initialize());
 
 app.use('/api', userRouter);
 app.use('/api', conversationRouter);
+app.use('/api', messageRouter)
 
 app.get('/', (req, res) => {
     res.send("HI IM TEXTILE API");
