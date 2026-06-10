@@ -1,5 +1,7 @@
 const {prisma} = require('../lib/prisma');
 const bcryptjs = require("bcryptjs");
+const cloudinary = require('../lib/cloudinary');
+const {body, validationResult, matchedData} = require("express-validator");
 
 async function signin(req, res) {
     try {
@@ -44,7 +46,15 @@ async function  getAllUsers(req, res) {
 
         res.json(result);
     } catch (err) {
-        console.error(err)
+        console.error(err);
+    }
+}
+
+async function updateProfile(req, res) {
+    try {
+        
+    } catch (err) {
+        console.error(err);
     }
 }
 
