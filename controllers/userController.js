@@ -1,7 +1,6 @@
 const {prisma} = require('../lib/prisma');
 const bcryptjs = require("bcryptjs");
-const cloudinary = require('../lib/cloudinary');
-const {body, validationResult, matchedData} = require("express-validator");
+
 
 async function signin(req, res) {
     try {
@@ -36,13 +35,9 @@ async function getUser(req, res) {
     }
 }
 
-async function  getAllUsers(req, res) {
+async function getAllUsers(req, res) {
     try {
-        const result = await prisma.user.findMany({
-            include: {
-                
-            }
-        });
+        const result = await prisma.user.findMany();
 
         res.json(result);
     } catch (err) {
@@ -52,7 +47,20 @@ async function  getAllUsers(req, res) {
 
 async function updateProfile(req, res) {
     try {
-        
+        const updatedData = {...req.body };
+
+        if(req.data && req.data.secure_url) {
+            updatedData.profilePicture = req.data.secure_url;
+        }
+
+        const result = await prisma.user.update({
+            where: {
+                id: req.user.userId
+            },
+            data: updatedData
+        })
+
+        return res.status(200).json(result);
     } catch (err) {
         console.error(err);
     }
@@ -61,5 +69,6 @@ async function updateProfile(req, res) {
 module.exports = {
     signin,
     getUser,
-    getAllUsers
+    getAllUsers,
+    updateProfile
 }
