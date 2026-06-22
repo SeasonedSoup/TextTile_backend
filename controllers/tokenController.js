@@ -2,12 +2,13 @@ const jwt = require ("jsonwebtoken");
 require("dotenv").config();
 
 async function signToken(req, res) {
+    const user = req.user
     jwt.sign({userId: req.user.id}, process.env.JWT_SECRET, 
         {expiresIn: '7d'}, (err, token) => {
             if (err) {
                 return res.status(401).json({error: "Error in processing the token has occured"})
             }
-            res.json({token})
+            res.json({token, user})
         }
      )
 }

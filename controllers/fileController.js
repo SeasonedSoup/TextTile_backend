@@ -20,13 +20,13 @@ const validateFile = [
 ]
 
 
-const uploadProfile = [upload.file('single'), validateFile, async (req, res, next) => {
+const uploadProfile = [upload.single('profilePicture'), validateFile, async (req, res, next) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.status(400).json({errors: errors.array()});
         }
-
+        //transform buffer to base64
         const base64File = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
         const result = await cloudinary.uploader.upload(base64File, {

@@ -15,7 +15,7 @@ async function signin(req, res) {
             throw new Error("User not created");
         }
         console.log(result);
-        res.json({message: "Signed up successfully!"}); 
+        res.json(result); 
     } catch (err) {
         return console.error(err);
     }
