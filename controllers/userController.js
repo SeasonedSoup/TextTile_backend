@@ -66,9 +66,42 @@ async function updateProfile(req, res) {
     }
 }
 
+async function changePassword(req, res) {
+    try {
+        const oldPassword = req.body.oldPassword;
+        const newPassword = req.body.newPassword;
+        const password = await prisma.user.findUnique({
+            where: {
+                id: req.user.userId
+            },
+            select: {
+                password: true
+            }
+        })
+        const match = await bcrypt.compare(oldPassword, password);
+        if (match) {
+            const result = await prisma.user.update({
+                where: {
+                    id: req.user.userId
+                },
+                data: {
+                    password: await bcryptjs.hash(newPassword, 11)
+                }
+            }) 
+
+            res.json(result); 
+        }
+
+        res.json('your current password does not match the password in database');
+    } catch(err) {
+        console.error(err);
+    }
+}
+
 module.exports = {
     signin,
     getUser,
     getAllUsers,
-    updateProfile
+    updateProfile,
+    changePassword
 }
