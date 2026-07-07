@@ -22,13 +22,16 @@ const validateFile = [
 
 const uploadProfile = [upload.single('profilePicture'), validateFile, async (req, res, next) => {
     try {
+        if (!req.file) {
+            return next();
+        }
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.status(400).json({errors: errors.array()});
         }
         //transform buffer to base64
         const base64File = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-
+        
         const result = await cloudinary.uploader.upload(base64File, {
             folder: 'user_profiles',
         });
@@ -38,7 +41,7 @@ const uploadProfile = [upload.single('profilePicture'), validateFile, async (req
         next()
 
     } catch (err) {
-        console.error(err);
+        return res.status(500).json({ error: 'Failed to process or upload image file.' });
     }
 }];
 
